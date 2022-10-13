@@ -1,4 +1,4 @@
-import { Command } from 'commander'
+import { Command, Option } from 'commander'
 import { generate, list, remove, show, store } from './commands'
 import { setVerbose } from './util'
 
@@ -6,6 +6,8 @@ const command = new Command('yarn svg')
 
 command
   .command('list')
+  .addOption(new Option('-f, --format <format>', "The output format").choices(['plain', 'alfred']).default('plain'))
+  .option('--subtitle <subtitle>', "When using `--format alfred`, a subtitle template. Use {{name}} to interpolate the name.")
   .description("Lists your passwords.")
   .action(list)
 
