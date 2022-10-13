@@ -5,5 +5,18 @@
   "main": "index.js",
   "repository": "git@github.com:joostlubach/ypass.git",
   "author": "Joost Lubach <joostlubach@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "MAIN=./src/index nodemon ./cli.js",
+    "compile": "tsc -p . --noEmit",
+    "build": "rimraf dist && tsc -p .",
+    "lint": "eslint -c .eslintrc.json --ignore-path .eslintignore pkg src config"
+  },
+  "devDependencies": {
+    "eslint": "^8.25.0",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.1.0",
+    "typescript": "^4.8.4"
+  }
 }

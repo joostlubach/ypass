@@ -1,0 +1,27 @@
+# Mac OS X
+.DS_Store
+
+# Node modules
+node_modules
+
+# Distribution
+dist
+tsconfig.tmp.json
+
+# Migrations
+.migrate
+
+# Runtime stuff
+.env
+/.keys
+/logs
+/dumps
+/remote
+/exports
+/public/rankings.json
+/public/day-winners.txt
+
+# NPM
+npm-debug.log
+yarn-error.log
+.vercel

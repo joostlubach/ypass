@@ -1,0 +1,40 @@
+{
+  "importStringConfiguration.hasSemicolon": false,
+  "importStringConfiguration.trailingComma": "multiLine",
+  "sortConfiguration.customOrderingRules.rules": [
+      {
+          "type": "importMember",
+          "regex": "^$",
+          "orderLevel": 50,
+          "disableSort": true
+      },
+      {
+          "regex": "^react",
+          "orderLevel": 10
+      },
+      {
+          "regex": "^[^.@~]",
+          "orderLevel": 15
+      },
+      {
+          "regex": "^[@]",
+          "orderLevel": 20
+      },
+      {
+          "regex": "^[~]",
+          "orderLevel": 25
+      },
+      {
+          "regex": "^[.]",
+          "orderLevel": 30
+      }
+  ],
+  "sortConfiguration.customOrderingRules.defaultNumberOfEmptyLinesAfterGroup": 0,
+  "importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
+  "importStringConfiguration.tabSize": 2,
+  "generalConfiguration.sortOnBeforeSave": true,
+  "sortConfiguration.joinImportPaths": true,
+  "generalConfiguration.exclude": [
+      "index\\.tsx?$"
+  ]
+}

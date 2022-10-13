@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "outDir": "./dist",
+
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "~":       ["src"],
+      "%*":      ["src/modules/*"],
+      "@*":      ["src/services/*"],
+      "~config": ["config"],
+      "*":       ["pkg/*"]
+    },
+
+    "strict": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "skipLibCheck": true
+  },
+  "include": [
+    "./src/**/*",
+    "./pkg/*/*",
+    "./pkg/*/src/**/*",
+    "./types/*",
+    "./config/**/*",
+    "./scripts/**/*"
+  ]
+}
