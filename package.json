@@ -1,0 +1,9 @@
+{
+  "name": "ypass",
+  "version": "1.0.0",
+  "description": "iCloud and Google password manager with CLI.",
+  "main": "index.js",
+  "repository": "git@github.com:joostlubach/ypass.git",
+  "author": "Joost Lubach <joostlubach@gmail.com>",
+  "license": "MIT"
+}
