@@ -33,8 +33,5 @@
   "importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
   "importStringConfiguration.tabSize": 2,
   "generalConfiguration.sortOnBeforeSave": true,
-  "sortConfiguration.joinImportPaths": true,
-  "generalConfiguration.exclude": [
-      "index\\.tsx?$"
-  ]
+  "sortConfiguration.joinImportPaths": true
 }

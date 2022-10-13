@@ -7,16 +7,38 @@
   "author": "Joost Lubach <joostlubach@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "MAIN=./src/index nodemon ./cli.js",
+    "cli": "MAIN=./src/index node ./cli.js",
     "compile": "tsc -p . --noEmit",
     "build": "rimraf dist && tsc -p .",
     "lint": "eslint -c .eslintrc.json --ignore-path .eslintignore pkg src config"
   },
   "devDependencies": {
+    "@types/child-process-promise": "^2.2.2",
+    "@types/fs-extra": "^9.0.13",
+    "@types/lodash": "^4.14.186",
+    "@types/ms": "^0.7.31",
+    "@types/strip-ansi": "^5.2.1",
+    "@typescript-eslint/eslint-plugin": "^5.40.0",
+    "@typescript-eslint/parser": "^5.40.0",
     "eslint": "^8.25.0",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",
     "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "chalk": "4.1.2",
+    "child-process-promise": "^2.2.1",
+    "commander": "^9.4.1",
+    "dotenv": "^16.0.3",
+    "fs-extra": "^10.1.0",
+    "glob-promise": "^5.0.0",
+    "js-crypto-pbkdf": "^1.0.4",
+    "lodash": "^4.17.21",
+    "neat-csv": "6.0.1",
+    "promised-sqlite3": "^1.2.0",
+    "readline": "^1.3.0",
+    "strip-ansi": "^6.0.1",
+    "ytil": "file:pkg/ytil"
   }
 }

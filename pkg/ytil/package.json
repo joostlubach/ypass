@@ -1,0 +1,12 @@
+{
+  "name": "ytil",
+  "version": "1.0.0",
+  "description": "Utility stuff that I use a lot",
+  "main": "index.ts",
+  "author": "Joost Lubach",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "ms": "^2.1.3"
+  }
+}

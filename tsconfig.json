@@ -1,17 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "ES2022",
     "outDir": "./dist",
 
-    "module": "commonjs",
+    "module": "CommonJS",
     "esModuleInterop": true,
     "resolveJsonModule": true,
 
+    "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "~":       ["src"],
-      "%*":      ["src/modules/*"],
-      "@*":      ["src/services/*"],
+      "~/*":     ["src/*"],
       "~config": ["config"],
       "*":       ["pkg/*"]
     },
@@ -26,8 +25,7 @@
     "./src/**/*",
     "./pkg/*/*",
     "./pkg/*/src/**/*",
-    "./types/*",
-    "./config/**/*",
-    "./scripts/**/*"
+    "./types/**/*.d.ts",
+    "./config/**/*"
   ]
 }
