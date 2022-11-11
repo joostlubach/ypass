@@ -47,12 +47,15 @@ export default class KeychainBackend implements Backend {
 
     const lines = (stderr ?? '').split('\n')
     for (const line of lines) {
-      const match = line.match(/^password:\s*(.*)$/)
+      const match = line.match(/^password:\s(.+)$/)
       if (match == null) { continue }
+
+      const passwordRaw = match[1].trim()
+      if (passwordRaw.length === 0) { continue }
 
       return {
         locators: [locator],
-        password: JSON.parse(match[1]),
+        password: JSON.parse(passwordRaw),
       }
     }
 
@@ -70,6 +73,8 @@ export default class KeychainBackend implements Backend {
       'add-generic-password',
       '-s', SERVICE,
       '-a', genericLocator.name,
+      '-w', password.password,
+      '-U',
     ], {
       throws: true,
     })
