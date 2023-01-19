@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "ypass"
+version = "0.1.0"
+description = ""
+authors = ["Joost Lubach <joostlubach@gmail.com>"]
+readme = "README.md"
+packages = [{include = "ypass"}]
+
+[tool.poetry.scripts]
+ypass = "ypass.main:app"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+typer = {extras = ["all"], version = "^0.7.0"}
+pyhumps = "^3.8.0"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^0.991"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

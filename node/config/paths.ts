@@ -6,7 +6,7 @@ const paths = {
   src:    resolveApp('src'),
   logs:   resolveApp('logs'),
 
-  dotenv: resolveApp('.env')
+  dotenv: resolveApp('../.env'),
 }
 export default paths
 
