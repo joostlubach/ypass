@@ -7,16 +7,16 @@ from ypass.password import Password
 
 class PasswordQuery:
 
-  filter: Optional[str]
+  name: Optional[str]
 
-  def __init__(self, /, filter: Optional[str]):
-    if filter:
-      self.filter = filter.lower()
+  def __init__(self, /, name: Optional[str] = None):
+    if name:
+      self.name = name.lower()
     else:
-      self.filter = None
+      self.name = None
 
   def match(self, password: Password):
-    # if self.filter and not (self.filter in password.account.lower()):
-    #   return False
+    if self.name and not (self.name in password.account.lower()):
+      return False
 
     return True

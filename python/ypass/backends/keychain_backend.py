@@ -5,6 +5,8 @@ from datetime import datetime
 from enum import Enum
 from typing import IO, Optional
 
+import typer
+
 from ..password import Password
 from ..util.password_query import PasswordQuery
 
@@ -17,15 +19,33 @@ class KeychainBackend:
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if process.stdout is None: return []
 
-    reader = PasswordReader(process.stdout)
+    reader = PasswordReader(process.stdout, process.stderr)
     return (password for password in reader() if query.match(password))
+
+  def show(self, query: PasswordQuery):
+    cmd = [
+      '/usr/bin/security', 'find-generic-password',
+      '-s', 'ypass',
+    ]
+
+    if query.name:
+      cmd += ['-a', query.name]
+
+    cmd += ['-g']
+
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if process.stdout is None: return []
+
+    reader    = PasswordReader(process.stdout, process.stderr)
+    generator = (password for password in reader())
+    return next(generator, None)
 
 class PasswordReader:
 
   Mode = Enum('Mode', ['PREAMBLE', 'ATTRIBUTES'])
 
-  def __init__(self, input: IO[bytes]):
-    self.input = input
+  def __init__(self, *inputs):
+    self.inputs = inputs
 
   def __call__(self):
     return self.filtered()
@@ -36,6 +56,7 @@ class PasswordReader:
   def all(self):
     current = None
     mode    = PasswordReader.Mode.PREAMBLE
+    advance = True
 
     def parse_preamble_line(line: str):
       nonlocal current, mode
@@ -44,24 +65,27 @@ class PasswordReader:
       if not match: return
 
       name, value = match.groups()
-      if not current: current = Password('')
+      if name == 'keychain':
+        if current: yield current
+        current = Password('')
 
       if name == 'attributes':
         mode = PasswordReader.Mode.ATTRIBUTES
+      elif name == 'password':
+        current.password = parse_value(value)
       else:
-        current.setattr(name, value)
+        current.setattr(name, parse_value(value))
 
     def parse_attributes_line(line: str):
-      nonlocal current, mode
+      nonlocal current, mode, advance
 
       match = re.match(r'^\s*(.+?)<(.*?)>\s*=\s*(.*?)$', line)
       if not match:
-        yield current
-        current = None
-        mode = PasswordReader.Mode.PREAMBLE
+        mode    = PasswordReader.Mode.PREAMBLE
+        advance = False
       else:
         name  = parse_attribute_name(match[1].strip())
-        value = parse_attribute_value(match[2].strip(), match[3].strip())
+        value = parse_value(match[3].strip(), match[2].strip())
 
         if name == 'acct':
           current.account = value
@@ -80,7 +104,7 @@ class PasswordReader:
       else:
         return name
 
-    def parse_attribute_value(type_hint: str, value: str):
+    def parse_value(value: str, type_hint: Optional[str] = None):
       if value == '<NULL>':
         return None
       elif value.startswith('"'):
@@ -112,15 +136,26 @@ class PasswordReader:
       else:
         return int(value, 10)
 
-    for line in self.input:
-      line = line.decode('utf-8')
+    while True:
+      if advance:
+        line = self.next_line()
+        if not line: break
+
+      advance = True
 
       if mode == PasswordReader.Mode.PREAMBLE:
-        parse_preamble_line(line)
+        yield from parse_preamble_line(line)
       else:
-        yield from parse_attributes_line(line)
+        parse_attributes_line(line)
 
     if current: yield current
+
+  def next_line(self):
+    for input in self.inputs:
+      line = next(input, None)
+      if line: return line.decode('utf-8').rstrip()
+
+    return None
 
   def include(self, password: Password):
     return password.getattr('svce') == 'ypass'

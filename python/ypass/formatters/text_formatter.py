@@ -1,7 +1,7 @@
 from typing import Iterable
 
-from ypass.formatters.formatter import Formatter
-from ypass.password import Password
+from ..formatters.formatter import Formatter
+from ..password import Password
 
 
 class TextFormatter(Formatter):
