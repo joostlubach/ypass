@@ -59,7 +59,7 @@ class PasswordReader:
         value = parse_value(match[3].strip(), match[2].strip())
 
         if name == 'acct':
-          current.account = value
+          current.name = value
         else:
           current.setattr(name, value)
 

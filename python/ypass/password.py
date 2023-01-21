@@ -3,12 +3,12 @@ from typing import Optional
 
 class Password:
 
-  account:    str
+  name:       str
   password:   Optional[str]
   attributes: dict[str, str]
 
-  def __init__(self, account: str, password: Optional[str] = None):
-    self.account = account
+  def __init__(self, name: str, password: Optional[str] = None):
+    self.name = name
     self.password = password
     self.attributes = {}
 

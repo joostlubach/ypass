@@ -12,6 +12,7 @@ from ..formatters.formatter import Formatter
 class Format(str, Enum):
   text   = 'text'
   alfred = 'alfred'
+  table  = 'table'
 
   def get_formatter(self, conf_str: Optional[str]) -> Formatter:
     pkg_key  = f'{self.value}_formatter'

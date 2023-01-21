@@ -16,7 +16,7 @@ class PasswordQuery:
       self.name = None
 
   def match(self, password: Password):
-    if self.name and not (self.name in password.account.lower()):
+    if self.name and not (self.name in password.name.lower()):
       return False
 
     return True

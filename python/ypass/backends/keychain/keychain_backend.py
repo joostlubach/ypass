@@ -7,14 +7,23 @@ from .password_reader import PasswordReader
 
 class KeychainBackend:
 
-  def list(self, query: PasswordQuery):
+  def list(self, query: PasswordQuery, include_passwords = False):
     cmd = ['/usr/bin/security', 'dump-keychain']
     
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if process.stdout is None: return []
 
-    reader = PasswordReader(process.stdout, process.stderr)
-    return (password for password in reader() if query.match(password))
+    reader   = PasswordReader(process.stdout, process.stderr)
+    filtered = (password for password in reader() if query.match(password))
+
+    if include_passwords:
+      return (
+        self._retrieve(PasswordQuery(name = password.name))
+        for password in filtered
+      )
+    else:
+      return filtered
+
 
   def show(self, query: PasswordQuery):
     password = self._retrieve(query)
