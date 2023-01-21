@@ -1,44 +1,12 @@
 import json
 import re
-import subprocess
 from datetime import datetime
 from enum import Enum
-from typing import IO, Optional
+from typing import Optional
 
-import typer
+from ...password import Password
+from .consts import SERVICE_NAME
 
-from ..password import Password
-from ..util.password_query import PasswordQuery
-
-
-class KeychainBackend:
-
-  def list(self, query: PasswordQuery):
-    cmd = ['/usr/bin/security', 'dump-keychain']
-    
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    if process.stdout is None: return []
-
-    reader = PasswordReader(process.stdout, process.stderr)
-    return (password for password in reader() if query.match(password))
-
-  def show(self, query: PasswordQuery):
-    cmd = [
-      '/usr/bin/security', 'find-generic-password',
-      '-s', 'ypass',
-    ]
-
-    if query.name:
-      cmd += ['-a', query.name]
-
-    cmd += ['-g']
-
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    if process.stdout is None: return []
-
-    reader    = PasswordReader(process.stdout, process.stderr)
-    generator = (password for password in reader())
-    return next(generator, None)
 
 class PasswordReader:
 
@@ -72,9 +40,12 @@ class PasswordReader:
       if name == 'attributes':
         mode = PasswordReader.Mode.ATTRIBUTES
       elif name == 'password':
-        current.password = parse_value(value)
-      else:
-        current.setattr(name, parse_value(value))
+        password = parse_value(value, 'blob')
+        if isinstance(password, bytearray):
+          password = password.decode('utf-8')
+        current.password = password
+      elif current:
+        current.setattr(name, parse_value(value))      
 
     def parse_attributes_line(line: str):
       nonlocal current, mode, advance
@@ -158,4 +129,4 @@ class PasswordReader:
     return None
 
   def include(self, password: Password):
-    return password.getattr('svce') == 'ypass'
+    return password.getattr('svce') == SERVICE_NAME
