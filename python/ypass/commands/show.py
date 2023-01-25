@@ -3,6 +3,8 @@ from typing import Optional
 
 import typer
 
+from ypass.formatters.formatter import Formatter
+
 from ..args import FormatArgument
 from ..backends import get_backend
 from ..formatters import Format
@@ -21,6 +23,7 @@ def show(
   query     = PasswordQuery(name = name)
 
   formatter = format.get_formatter(format_conf)
+  formatter.mode = Formatter.Mode.PASSWORD_ONLY
 
   try:
     password = get_backend().show(query)

@@ -1,5 +1,6 @@
 import sys
-from abc import ABC, abstractmethod
+from abc import ABC
+from enum import Enum
 from typing import Iterable
 
 from ..password import Password
@@ -7,10 +8,14 @@ from ..password import Password
 
 class Formatter(ABC):
 
-  show_passwords: bool
+  class Mode(int, Enum):
+    NAME_ONLY         = 1
+    PASSWORD_ONLY     = 2
+    NAME_AND_PASSWORD = 3
 
   def __init__(self, conf: dict):
     self.conf = conf
+    self.mode = self.Mode.NAME_ONLY
 
   def print_list(self, passwords: Iterable[Password]):
     for line in self._format_list(passwords):

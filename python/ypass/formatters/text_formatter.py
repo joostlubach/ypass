@@ -11,7 +11,9 @@ class TextFormatter(Formatter):
     return (self._format_single(password) for password in passwords)
 
   def _format_single(self, password: Password):
-    if self.show_passwords:
-      return f'{password.name}\t{password.password}'
-    else:
+    if self.mode == Formatter.Mode.NAME_ONLY:
       return password.name
+    elif self.mode == Formatter.Mode.PASSWORD_ONLY:
+      return password.password
+    else:
+      return f'{password.name}\t{password.password}'

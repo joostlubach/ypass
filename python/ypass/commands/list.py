@@ -23,6 +23,6 @@ def list(
   passwords = get_backend().list(query, include_passwords = show_passwords)
 
   formatter = format.get_formatter(format_conf)
-  formatter.show_passwords = show_passwords
+  formatter.mode = Formatter.Mode.NAME_AND_PASSWORD if show_passwords else Formatter.Mode.NAME_ONLY
 
   formatter.print_list(passwords)
